@@ -34,4 +34,8 @@ public class SolidSprite extends SpriteWrapper{
     public boolean isOverlap(Rectangle check){
         return this.spriteRectangle.overlaps(check);
     }
+
+    public void releaseSprite(){
+        spriteRectangle = null;
+    }
 }

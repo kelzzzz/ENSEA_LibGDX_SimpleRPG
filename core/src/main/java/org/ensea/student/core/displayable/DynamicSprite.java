@@ -12,8 +12,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-import static org.ensea.student.core.Game.pe;
 import static org.ensea.student.core.displayable.DynamicSprite.direction.NONE;
+import static org.ensea.student.core.engine.RenderEngine.pe;
 
 public class DynamicSprite extends SolidSprite{
     int speed = 150;
@@ -78,12 +78,14 @@ public class DynamicSprite extends SolidSprite{
 
         xPos = x;
         yPos = y;
+        prevx = x;
+        prevy = y;
         spriteRectangle = new Rectangle(xPos,yPos, (float) texture.getWidth() / spriteSheetNumberOfColumns, (float) texture.getHeight() / spriteSheetNumberOfRows);
     }
 
     @Override
     public void draw(){
-        boolean collide = pe.collidable.isOverlap(spriteRectangle);
+        boolean collide = pe.isColliding(spriteRectangle);
 
         //TODO The idle animation always faces forward, better if it faces the direction it was
         if(!Gdx.input.isKeyPressed(Input.Keys.LEFT)

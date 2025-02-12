@@ -13,7 +13,7 @@
 	<name>Game desktop</name>
 
 	<properties>
-		<mainClass>main.java.org.ensea.student.java.GameDesktop</mainClass>
+		<mainClass>org.ensea.student.java.GameDesktop</mainClass>
 	</properties>
 
 	<dependencies>
