@@ -10,14 +10,20 @@ public class SimpleTilemap extends SpriteWrapper{
 
     public static SolidSprite[][] coordinates;
 
+    public SimpleTilemap(int x, int y, String backdropFileName){
+        coordinates = new SolidSprite[x][y];
+        texture = new Texture(Gdx.files.internal(backdropFileName));
+    }
+
     @Override
     public void draw() {
         int xLen = coordinates.length;
         int yLen = coordinates[1].length;
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        TextureRegion tr = new TextureRegion(texture);
-        tr.setRegion(0,0,texture.getWidth()*xLen, texture.getHeight()*yLen);
-        drawTextureRegion(tr, 0, 0);
+        drawWrappingBackground(xLen, yLen);
+        populateEnvironmentalSprites(xLen, yLen);
+    }
+
+    private static void populateEnvironmentalSprites(int xLen, int yLen) {
         for(int i = 0; i < xLen; i++){
             for(int j = 0; j < yLen; j++){
                 if(coordinates[i][j] != null){
@@ -26,14 +32,16 @@ public class SimpleTilemap extends SpriteWrapper{
             }
         }
     }
-    
-    public SimpleTilemap(int x, int y, String backdropFileName){
-        coordinates = new SolidSprite[x][y];
-        texture = new Texture(Gdx.files.internal(backdropFileName));
+
+    private void drawWrappingBackground(int xLen, int yLen) {
+        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        TextureRegion tr = new TextureRegion(texture);
+        tr.setRegion(0,0,texture.getWidth()* xLen, texture.getHeight()* yLen);
+        drawTextureRegion(tr, 0, 0);
     }
 
     public void insertTile(SolidSprite tile, float coordX, float coordY){
-        coordinates[(int)coordX/tile.getTextureWidth()][(int)coordY/tile.getTextureHeight()] = tile;
+        coordinates[(int)(coordX/tile.getWidth())][(int)(coordY/tile.getHeight())] = tile;
     }
 
     public void insertTile(SolidSprite tile, int i, int j){
@@ -45,4 +53,5 @@ public class SimpleTilemap extends SpriteWrapper{
         batch.draw(tr, x, y);
         batch.end();
     }
+
 }

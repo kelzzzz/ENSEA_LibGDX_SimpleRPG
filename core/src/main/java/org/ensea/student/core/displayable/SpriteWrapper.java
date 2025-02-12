@@ -3,33 +3,46 @@ package org.ensea.student.core.displayable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class SpriteWrapper implements Displayable{
-    double height;
-    double width;
-    float xPos;
-    float yPos;
-    Texture texture;
-    SpriteBatch batch;
+    protected double height;
+    protected double width;
+    protected float xPos;
+    protected float yPos;
+    protected Texture texture;
+    protected final SpriteBatch batch;
 
     public SpriteWrapper(String textureFileName, float x, float y){
-        texture = new Texture(Gdx.files.internal(textureFileName));
-        batch = new SpriteBatch();
-        xPos = x;
-        yPos = y;
+        this.texture = new Texture(Gdx.files.internal(textureFileName));
+        this.batch = new SpriteBatch();
+        this.xPos = x;
+        this.yPos = y;
+        this.height = texture.getHeight();
+        this.width = texture.getWidth();
+    }
+
+    public SpriteWrapper(Texture texture, float x, float y){
+        this.texture = texture;
+        this.batch = new SpriteBatch();
+        this.xPos = x;
+        this.yPos = y;
+        this.height = texture.getHeight();
+        this.width = texture.getWidth();
     }
 
     public SpriteWrapper(){
-        batch = new SpriteBatch();
+        this.batch = new SpriteBatch();
     }
 
     @Override
     public void draw() {
-        batch.begin();
-        batch.draw(texture, xPos,yPos);
-        batch.end();
+        this.batch.begin();
+        this.batch.draw(texture, xPos,yPos);
+        this.batch.end();
     }
+
+    public double getHeight() {return height;}
+    public double getWidth() {return width;}
     public float getX(){
         return xPos;
     }

@@ -1,134 +1,145 @@
 package org.ensea.student.core.displayable;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import org.ensea.student.core.engine.GameEngine;
 
 import static org.ensea.student.core.displayable.DynamicSprite.direction.NONE;
-import static org.ensea.student.core.engine.RenderEngine.pe;
 
 public class DynamicSprite extends SolidSprite{
-    int speed = 150;
-    enum direction {NORTH, SOUTH, EAST, WEST, NONE};
-    direction currentDirection = NONE;
 
-    int spriteSheetNumberOfColumns = 10;
-    int spriteSheetNumberOfRows = 4;
+    /*Direction related variables*/
+    public enum direction {NORTH, SOUTH, EAST, WEST, NONE}
 
-    Rectangle spriteRectangle;
-    Animation am;
+    private direction currentDirection = NONE;
 
-    float stateTime;
+    /*Movement related variables*/
+    private Rectangle spriteRectangle;
+    private float prevy;
+    private float prevx;
+    private final int speed = 150;
+    private final GameEngine ge;
 
-    float prevy = 0;
-    float prevx = 0;
+    /*Animation related variables*/
+    private final int spriteSheetNumberOfColumns = 10;
+    private final int spriteSheetNumberOfRows = 4;
+    private float stateTime;
 
-    Animation upAnimation;
-    Animation downAnimation;
-    Animation leftAnimation;
-    Animation rightAnimation;
-    Animation idleAnimation;
+    private Animation currentAnimation;
+    private Animation upAnimation;
+    private Animation downAnimation;
+    private Animation leftAnimation;
+    private Animation rightAnimation;
+    private Animation idleAnimation;
 
     public DynamicSprite(String textureFileName, float x, float y){
         super(textureFileName, x, y);
-
-        TextureRegion[][] tmp = TextureRegion.split(texture,
-                texture.getWidth() / spriteSheetNumberOfColumns,
-                texture.getHeight() / spriteSheetNumberOfRows);
-
-        TextureRegion[] downFrames = new TextureRegion[spriteSheetNumberOfColumns];
-        TextureRegion[] upFrames = new TextureRegion[spriteSheetNumberOfColumns];
-        TextureRegion[] leftFrames = new TextureRegion[spriteSheetNumberOfColumns];
-        TextureRegion[] rightFrames = new TextureRegion[spriteSheetNumberOfColumns];
-
-        TextureRegion[] idleFrames = new TextureRegion[1];
-
-        idleFrames[0] = tmp[0][0];
-        int index = 0;
-
-        for (int j = 0; j < spriteSheetNumberOfColumns; j++) {
-            downFrames[j] = tmp[0][j];
-        }
-        for (int j = 0; j < spriteSheetNumberOfColumns; j++) {
-            upFrames[j] = tmp[2][j];
-        }
-        for (int j = 0; j < spriteSheetNumberOfColumns; j++) {
-            leftFrames[j] = tmp[1][j];
-        }
-        for (int j = 0; j < spriteSheetNumberOfColumns; j++) {
-            rightFrames[j] = tmp[3][j];
-        }
-
-        // Initialize the Animation with the frame interval and array of frames
-        //am = new Animation(0.025f, walkFrames);
-        upAnimation = new Animation(0.03F,upFrames);
-        downAnimation = new Animation(0.03F,downFrames);
-        leftAnimation = new Animation(0.03F,leftFrames);
-        rightAnimation = new Animation(0.03F,rightFrames);
-
-        idleAnimation = new Animation(0,idleFrames);
-
-        xPos = x;
-        yPos = y;
-        prevx = x;
-        prevy = y;
-        spriteRectangle = new Rectangle(xPos,yPos, (float) texture.getWidth() / spriteSheetNumberOfColumns, (float) texture.getHeight() / spriteSheetNumberOfRows);
+        formatAnimationFromSpriteSheet();
+        this.prevx = x;
+        this.prevy = y;
+        this.spriteRectangle = new Rectangle(this.xPos,this.yPos, (float) this.texture.getWidth() / this.spriteSheetNumberOfColumns, (float) texture.getHeight() / spriteSheetNumberOfRows);
+        ge = new GameEngine(this);
     }
 
     @Override
     public void draw(){
-        boolean collide = pe.isColliding(spriteRectangle);
-
-        //TODO The idle animation always faces forward, better if it faces the direction it was
-        if(!Gdx.input.isKeyPressed(Input.Keys.LEFT)
-            && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)
-            && !Gdx.input.isKeyPressed(Input.Keys.UP)
-            && !Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            am = idleAnimation;
-        }
-        if(collide){
-            this.xPos = prevx;
-            this.yPos = prevy;
-        }
-        /*** TODO FIX COLLISION !!!!*/
-        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            prevx = this.xPos;
-            am = leftAnimation;
-            currentDirection = direction.WEST;
-            xPos -= Gdx.graphics.getDeltaTime() * speed;
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            prevx = this.xPos;
-            am = rightAnimation;
-            currentDirection = direction.EAST;
-            xPos += Gdx.graphics.getDeltaTime() * speed;
-        }
-
-        else if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            prevy = this.yPos;
-            am = upAnimation;
-            currentDirection = direction.NORTH;
-            yPos += Gdx.graphics.getDeltaTime() * speed;
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            prevy = this.yPos;
-            am=downAnimation;
-            currentDirection = direction.SOUTH;
-            yPos -= Gdx.graphics.getDeltaTime() * speed;
-        }
+        ge.update();
         batch.begin();
-        spriteRectangle = new Rectangle(xPos,yPos, (float) texture.getWidth() / spriteSheetNumberOfColumns, (float) texture.getHeight() / spriteSheetNumberOfRows);
-        stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = am.getKeyFrame(stateTime, true);
+        TextureRegion currentFrame = getCurrentFrame();
         batch.draw(currentFrame, (int)xPos, (int)yPos);
         batch.end();
+    }
+
+    private void formatAnimationFromSpriteSheet() {
+        TextureRegion[][] tmp = TextureRegion.split(this.texture,
+                this.texture.getWidth() / this.spriteSheetNumberOfColumns,
+                this.texture.getHeight() / this.spriteSheetNumberOfRows);
+
+        TextureRegion[] downFrames = new TextureRegion[this.spriteSheetNumberOfColumns];
+        TextureRegion[] upFrames = new TextureRegion[this.spriteSheetNumberOfColumns];
+        TextureRegion[] leftFrames = new TextureRegion[this.spriteSheetNumberOfColumns];
+        TextureRegion[] rightFrames = new TextureRegion[this.spriteSheetNumberOfColumns];
+        TextureRegion[] idleFrames = new TextureRegion[1];
+
+        idleFrames[0] = tmp[0][0];
+
+        storeFrames(downFrames, tmp, 0);
+        storeFrames(upFrames, tmp, 2);
+        storeFrames(leftFrames, tmp, 1);
+        storeFrames(rightFrames, tmp, 3);
+
+        initDirectionalAnimations(upFrames, downFrames, leftFrames, rightFrames, idleFrames);
+    }
+
+    private void initDirectionalAnimations(TextureRegion[] upFrames, TextureRegion[] downFrames, TextureRegion[] leftFrames, TextureRegion[] rightFrames, TextureRegion[] idleFrames) {
+        // Initialize the Animation with the frame interval and array of frames
+        this.upAnimation = new Animation(0.03F, upFrames);
+        this.downAnimation = new Animation(0.03F, downFrames);
+        this.leftAnimation = new Animation(0.03F, leftFrames);
+        this.rightAnimation = new Animation(0.03F, rightFrames);
+        this.idleAnimation = new Animation(0, idleFrames);
+    }
+
+    private void storeFrames(TextureRegion[] framesList, TextureRegion[][] tmp, int x) {
+        System.arraycopy(tmp[x], 0, framesList, 0, this.spriteSheetNumberOfColumns);
+    }
+
+    private TextureRegion getCurrentFrame() {
+        spriteRectangle = new Rectangle(xPos,yPos, (float) texture.getWidth() / spriteSheetNumberOfColumns, (float) texture.getHeight() / spriteSheetNumberOfRows);
+        stateTime += Gdx.graphics.getDeltaTime();
+        return currentAnimation.getKeyFrame(stateTime, true);
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public Rectangle getSpriteRectangle() {
+        return spriteRectangle;
+    }
+
+    public float getPrevy() {
+        return prevy;
+    }
+
+    public float getPrevx() {
+        return prevx;
+    }
+
+    public Animation getUpAnimation() {
+        return upAnimation;
+    }
+
+    public Animation getDownAnimation() {
+        return downAnimation;
+    }
+
+    public Animation getLeftAnimation() {
+        return leftAnimation;
+    }
+
+    public Animation getRightAnimation() {
+        return rightAnimation;
+    }
+
+    public Animation getIdleAnimation() {
+        return idleAnimation;
+    }
+    public void setCurrentAnimation(Animation currentAnimation) {
+        this.currentAnimation = currentAnimation;
+    }
+
+    public void setCurrentDirection(direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
+    public void setPrevy(float prevy) {
+        this.prevy = prevy;
+    }
+
+    public void setPrevx(float prevx) {
+        this.prevx = prevx;
     }
 }

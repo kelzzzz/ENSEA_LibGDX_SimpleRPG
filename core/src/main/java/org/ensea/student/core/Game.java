@@ -1,6 +1,7 @@
 package org.ensea.student.core;
 
 import com.badlogic.gdx.ApplicationListener;
+import org.ensea.student.core.displayable.level.BasicLevel;
 import org.ensea.student.core.engine.RenderEngine;
 
 public class Game implements ApplicationListener {
@@ -8,7 +9,7 @@ public class Game implements ApplicationListener {
 	RenderEngine re;
 	@Override
 	public void create () {
-		re = new RenderEngine();
+		re = new RenderEngine(100,100,new BasicLevel());
 	}
 
 	@Override
