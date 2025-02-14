@@ -1,6 +1,8 @@
 # SimpleRPG
 This is a simple RPG game project for the Java FAME class ENSEA 2025. This project was built with Maven, LibGDX, and open source assets.
 
+This project was built from LibGDX's Maven archetype, hence, some builds, such as builds for Android, at not being used currently.
+
 ## How to run this project
 
 1) Clone this repo
