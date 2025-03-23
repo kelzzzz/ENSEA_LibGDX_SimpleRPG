@@ -6,6 +6,8 @@ public class Constants {
     public static final String TEXTURE_ROCK_PATH = "rock.png";
     public static final String TEXTURE_TRAP_PATH = "trap.png";
     public static final String TEXTURE_TREE_PATH = "tree.png";
-
+    public static enum ITEM_TYPES{
+        HEALING,DAMAGING
+    }
 
 }

@@ -42,7 +42,6 @@ public class DynamicSprite extends SolidSprite{
         this.spriteRectangle = new Rectangle(this.xPos,this.yPos, (float) this.texture.getWidth() / this.spriteSheetNumberOfColumns, (float) texture.getHeight() / spriteSheetNumberOfRows);
         ge = new GameEngine(this);
     }
-
     @Override
     public void draw(){
         ge.update();
@@ -51,7 +50,9 @@ public class DynamicSprite extends SolidSprite{
         batch.draw(currentFrame, (int)xPos, (int)yPos);
         batch.end();
     }
-
+    public GameEngine getEngine(){
+        return this.ge;
+    }
     private void formatAnimationFromSpriteSheet() {
         TextureRegion[][] tmp = TextureRegion.split(this.texture,
                 this.texture.getWidth() / this.spriteSheetNumberOfColumns,

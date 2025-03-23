@@ -8,7 +8,7 @@ import static org.ensea.student.core.engine.RenderEngine.pe;
 
 public class GameEngine implements Engine{
     private final DynamicSprite ds;
-
+    private boolean paused = false;
     public GameEngine(DynamicSprite primarySprite){
         ds = primarySprite;
     }
@@ -18,28 +18,41 @@ public class GameEngine implements Engine{
         handleMovement();
     }
 
+    public void setStopMovement(boolean pause){
+        this.paused = pause;
+    }
+
+    public void pauseMovement(){
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)
+                || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
+                || Gdx.input.isKeyPressed(Input.Keys.UP)
+                || Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            ds.setCurrentAnimation(ds.getIdleAnimation());
+        }
+    }
+
     private void handleMovement() {
-        boolean collide = pe.isColliding(ds.getSpriteRectangle());
+        if(paused){
+            pauseMovement();
+        }
+        else {
+            boolean collide = pe.isColliding(ds.getSpriteRectangle());
 
-        //TODO The idle animation always faces forward, better if it faces the direction it was
-        idleAction();
+            //TODO The idle animation always faces forward, better if it faces the direction it was
+            idleAction();
 
-        if(collide){
-            ds.setX(ds.getPrevx());
-            ds.setY(ds.getPrevy());
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            leftAction();
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            rightAction();
-        }
-
-        else if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            upAction();
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            downAction();
+            if (collide) {
+                ds.setX(ds.getPrevx());
+                ds.setY(ds.getPrevy());
+            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                leftAction();
+            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                rightAction();
+            } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                upAction();
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                downAction();
+            }
         }
     }
 

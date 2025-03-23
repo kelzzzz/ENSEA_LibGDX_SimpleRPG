@@ -7,6 +7,7 @@ import org.ensea.student.core.displayable.DynamicSprite;
 import org.ensea.student.core.displayable.SimpleTilemap;
 import org.ensea.student.core.displayable.SolidSprite;
 import org.ensea.student.core.displayable.level.Level;
+import org.ensea.student.core.displayable.ui.InventoryUI;
 
 import static org.ensea.student.core.util.Constants.*;
 
@@ -15,6 +16,8 @@ public class RenderEngine implements Engine {
     private final DynamicSprite ds;
 
     public static PhysicsEngine pe;
+
+    public final InventoryUI invu = new InventoryUI();
 
     public RenderEngine(){
         this.ds = new DynamicSprite(TEXTURE_HERO_PATH,100,100);
@@ -32,7 +35,9 @@ public class RenderEngine implements Engine {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         this.tm.draw();
+        this.ds.getEngine().setStopMovement(invu.isOpen());
         this.ds.draw();
+        this.invu.open();
     }
 
     public void loadTilemap(Level lvl){
