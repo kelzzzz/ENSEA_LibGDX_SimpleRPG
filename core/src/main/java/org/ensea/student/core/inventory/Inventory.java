@@ -11,11 +11,15 @@ public class Inventory {
         //construct!
     }
 
-    public Inventory getInstance(){
+    public static Inventory getInstance(){
         if(instance == null){
             instance = new Inventory();
         }
         return instance;
+    }
+
+    public ArrayList<Item> getInventory(){
+        return this.inventoryItems;
     }
 
     public void addItemToInventory(Item i){

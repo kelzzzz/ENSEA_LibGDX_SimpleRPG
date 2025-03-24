@@ -1,5 +1,8 @@
 package org.ensea.student.core.inventory;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import org.ensea.student.core.displayable.SpriteWrapper;
+
 import java.util.ArrayList;
 
 public class CompoundItem implements Item{
@@ -7,6 +10,10 @@ public class CompoundItem implements Item{
 
     public void addItem(Item i){
         itemGroup.add(i);
+    }
+
+    public void bulkAddItem(ArrayList<Item> items){
+        itemGroup.addAll(items);
     }
 
     public void removeItem(Item i){
@@ -37,17 +44,27 @@ public class CompoundItem implements Item{
 
     @Override
     public String getItemLabel() {
-        return itemGroup.get(0).getItemLabel();
+        if(!itemGroup.isEmpty()){
+            return itemGroup.get(0).getItemLabel();
+        }return "";
     }
 
     @Override
     public String getItemDescription() {
-        return itemGroup.get(0).getItemDescription();
+        if(!itemGroup.isEmpty()){
+            return itemGroup.get(0).getItemDescription();
+        }
+        return "";
     }
 
     @Override
-    public String getItemIconLocation() {
-        return itemGroup.get(0).getItemIconLocation();
+    public TextureRegion getItemSprite() {
+        return itemGroup.get(0).getItemSprite();
+    }
+
+    @Override
+    public void setIcon(TextureRegion icon) {
+        System.out.println("Nothing right now");
     }
 
     @Override

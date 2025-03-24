@@ -1,5 +1,6 @@
 package org.ensea.student.core.inventory;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.ensea.student.core.util.Constants;
 
 public class SingleItem implements Item{
@@ -8,8 +9,24 @@ public class SingleItem implements Item{
     private float weight;
     private float value;
     private Constants.ITEM_TYPES type;
-    private String iconPath;
 
+    @Override
+    public void setIcon(TextureRegion icon) {
+        this.icon = icon;
+    }
+
+    private TextureRegion icon;
+
+    public int getIconCol() {
+        return iconCol;
+    }
+
+    public int getIconRow() {
+        return iconRow;
+    }
+
+    private int iconRow;
+    private int iconCol;
 
     @Override
     public float getItemWeight() {
@@ -32,8 +49,8 @@ public class SingleItem implements Item{
     }
 
     @Override
-    public String getItemIconLocation() {
-        return this.iconPath;
+    public TextureRegion getItemSprite() {
+        return this.icon;
     }
 
     @Override

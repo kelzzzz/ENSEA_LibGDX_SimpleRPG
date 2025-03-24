@@ -82,6 +82,7 @@
 				<groupId>com.badlogicgames.gdx</groupId>
 				<artifactId>gdx-backend-gwt</artifactId>
 				<version>1.2.0</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<!-- ios-specific dependencies -->
@@ -99,6 +100,10 @@
 		<repository>
 			<id>gdx-nightlies</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<id>mvnrepository</id>
+			<url>https://mvnrepository.com/artifact/</url>
 		</repository>
 		<repository>
 			<id>gdx-releases</id>
