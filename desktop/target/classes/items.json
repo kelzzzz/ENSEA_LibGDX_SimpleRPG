@@ -17,6 +17,15 @@
       "type": "DAMAGING",
       "iconRow": 10,
       "iconCol": 12
+    },
+      {
+      "label": "Boots",
+      "description": "Just some booties.",
+      "weight": 6.7,
+      "value": 15.7,
+      "type": "EQUIPMENT",
+      "iconRow": 8,
+      "iconCol": 2
     }
   ]
 }

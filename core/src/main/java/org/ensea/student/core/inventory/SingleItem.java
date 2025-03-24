@@ -9,13 +9,14 @@ public class SingleItem implements Item{
     private float weight;
     private float value;
     private Constants.ITEM_TYPES type;
+    private int iconRow;
+    private int iconCol;
+    private TextureRegion icon;
 
     @Override
     public void setIcon(TextureRegion icon) {
         this.icon = icon;
     }
-
-    private TextureRegion icon;
 
     public int getIconCol() {
         return iconCol;
@@ -24,9 +25,6 @@ public class SingleItem implements Item{
     public int getIconRow() {
         return iconRow;
     }
-
-    private int iconRow;
-    private int iconCol;
 
     @Override
     public float getItemWeight() {

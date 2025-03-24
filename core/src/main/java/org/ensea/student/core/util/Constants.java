@@ -11,8 +11,9 @@ public class Constants {
     public static final String TEXTURE_ROCK_PATH = "rock.png";
     public static final String TEXTURE_TRAP_PATH = "trap.png";
     public static final String TEXTURE_TREE_PATH = "tree.png";
+    public static final String JSON_ITEM_MEMBER_CLASS_NAME = "items";
     public static enum ITEM_TYPES{
-        HEALING,DAMAGING
+        HEALING,DAMAGING, EQUIPMENT
     }
     public static final String ITEM_ICONS_PATH = "Item-icons.png";
     public static String ITEMS_JSON_STRING = "";

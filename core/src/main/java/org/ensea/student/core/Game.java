@@ -26,8 +26,12 @@ public class Game implements ApplicationListener {
 		//Deserialize all the items into memory
 		SerializedItemDB sidb = SerializedItemDB.getInstance();
 		Inventory inv = Inventory.getInstance();
+
+		//Add test items
 		inv.addItemToInventory(sidb.getItemDB().get(0));
 		inv.addItemToInventory(sidb.getItemDB().get(1));
+
+		//inv.addItemToInventory(sidb.getItemDB().get(2));
 
 		re = new RenderEngine(100,100,new BasicLevel());
 	}

@@ -44,15 +44,21 @@ public class CompoundItem implements Item{
 
     @Override
     public String getItemLabel() {
-        if(!itemGroup.isEmpty()){
+        if(itemGroup.size()==1){
             return itemGroup.get(0).getItemLabel();
+        }
+        if(!itemGroup.isEmpty()){
+            return "Multiple Items";
         }return "";
     }
 
     @Override
     public String getItemDescription() {
-        if(!itemGroup.isEmpty()){
+        if(itemGroup.size()==1){
             return itemGroup.get(0).getItemDescription();
+        }
+        if(!itemGroup.isEmpty()){
+            return "A group of various items.";
         }
         return "";
     }

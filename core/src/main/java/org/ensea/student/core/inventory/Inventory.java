@@ -7,10 +7,7 @@ public class Inventory {
     private static Inventory instance;
     private final ArrayList<Item> inventoryItems = new ArrayList<Item>();
 
-    private Inventory(){
-        //construct!
-    }
-
+    /*Singleton*/
     public static Inventory getInstance(){
         if(instance == null){
             instance = new Inventory();
