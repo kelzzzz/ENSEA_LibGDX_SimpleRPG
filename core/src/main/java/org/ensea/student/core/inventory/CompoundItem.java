@@ -70,6 +70,8 @@ public class CompoundItem implements Item{
 
     @Override
     public void setIcon(TextureRegion icon) {
+        //TODO This is superfluous and only applicable to the SingleItem, probably shouldn't be in the interface
+        //Println just to prevent compiler error right now
         System.out.println("Nothing right now");
     }
 

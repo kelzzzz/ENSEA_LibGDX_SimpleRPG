@@ -13,11 +13,11 @@ import org.ensea.student.core.inventory.Item;
 public class ItemButton implements Displayable, Selectable {
     public Item item;
     public boolean isSelected;
-    private ImageButton button;
-    private int x = 0;
-    private int y = 0;
-    private Stage stage;
-    private Color iconUntinted;
+    private final ImageButton button;
+    private int x;
+    private int y;
+    private final Stage stage;
+    private final Color iconUntinted;
 
     public ItemButton(Item item, int x, int y, Stage stage){
         this.item = item;
@@ -53,6 +53,7 @@ public class ItemButton implements Displayable, Selectable {
                 button.getImage().setColor(new Color(iconUntinted.r,iconUntinted.g,iconUntinted.b,.2f));
             }
         });
+
         if(isSelected){
             button.clearListeners();
             button.addListener(new ClickListener() {
@@ -62,6 +63,7 @@ public class ItemButton implements Displayable, Selectable {
                 }
             });
         }
+
         stage.addActor(button);
     }
 

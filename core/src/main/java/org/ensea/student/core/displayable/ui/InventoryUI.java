@@ -17,19 +17,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class InventoryUI implements Displayable {
-    Boolean windowOpen = false;
+    private Boolean windowOpen = false;
 
-    RoundedRectangleShapeRenderer shape = new RoundedRectangleShapeRenderer();
-    ArrayList<ItemButton> itemButtons = new ArrayList<ItemButton>();
-    CompoundItem currentItem;
+    private final RoundedRectangleShapeRenderer shape = new RoundedRectangleShapeRenderer();
+    private final ArrayList<ItemButton> itemButtons = new ArrayList<ItemButton>();
+    private CompoundItem currentItem;
 
-    int UIX = 100;
-    int UIY = 200;
-    int UIW = 190;
-    int UIH = 220;
+    //TODO These should be in the constructor!!!!!!!!!
+    private int UIX = 100;
+    private int UIY = 200;
+    private int UIW = 190;
+    private int UIH = 220;
 
-    Stage stage;
-    BitmapFont font = font = new BitmapFont();
+    private Stage stage;
+    private BitmapFont font = font = new BitmapFont();
 
     public InventoryUI(){
         stage = new Stage();

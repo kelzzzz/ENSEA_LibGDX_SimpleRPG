@@ -33,15 +33,11 @@ public class SerializedItemDB {
         String jsonData = ITEMS_JSON_STRING;
         JsonObject jo = (JsonObject)jsonParser.parse(jsonData);
         jsonArr = jo.getAsJsonArray(JSON_ITEM_MEMBER_CLASS_NAME);
-        ripTextures();
+        initTextures();
         initItemDB();
     }
 
-    public ArrayList<SingleItem> getItemDB(){
-        return this.itemDB;
-    }
-
-    private void ripTextures(){
+    private void initTextures(){
         sprites = TextureRegion.split(this.iconSheet, 32,32);
     }
 
@@ -52,5 +48,9 @@ public class SerializedItemDB {
         for(SingleItem i : itemDB){
             i.setIcon(sprites[i.getIconRow()][i.getIconCol()]);
         }
+    }
+
+    public ArrayList<SingleItem> getItemDB(){
+        return this.itemDB;
     }
 }
